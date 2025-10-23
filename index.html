@@ -1,0 +1,92 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Phillip Mann | Physics & CS Portfolio</title>
+  <link rel="stylesheet" href="style.css" />
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" />
+</head>
+<body>
+  <header>
+    <h1>Phillip Mann</h1>
+    <h2>Physics and CS Student at Davidson College</h2>
+    <p class="subheader">Applied Physics | Renewable Energy | Mechanical Design | Aerospace Mechatronics</p>
+    <div class="icon-links">
+      <a href="mailto:phmann@davidson.edu" title="Email"><i class="fas fa-envelope"></i></a>
+      <a href="https://www.linkedin.com/in/phillip-mann" target="_blank" title="LinkedIn"><i class="fab fa-linkedin"></i></a>
+      <a href="https://github.com/phillipmann6813" target="_blank" title="GitHub"><i class="fab fa-github"></i></a>
+      <a href="Mann.Phillip(Davidson).pdf" target="_blank" title="Resume"><i class="fas fa-file-pdf"></i></a>
+    </div>
+  </header>
+
+  <main>
+    <section id="projects">
+      <h3>Projects</h3>
+
+      <div class="project-card">
+        <h4>Solar-Powered Pontoon Boat</h4>
+        <div id="boat-gallery" class="gallery"></div>
+        <p>Designed and built a solar-electric pontoon boat integrating photovoltaic panels, lithium-ion battery storage, and electric propulsion. 
+        Developed control circuitry and implemented real-time power management for efficient operation across variable sunlight conditions.</p>
+      </div>
+
+      <div class="project-card">
+        <h4>Aurelia Institute Internship</h4>
+        <div id="aurelia-gallery" class="gallery"></div>
+        <p>Worked on modular spacecraft and aerospace mechatronic systems, contributing to prototyping and experimental hardware development. 
+        Focused on materials optimization, modular deployment structures, and onboard control systems for dynamic stabilization.</p>
+      </div>
+
+      <div class="project-card">
+        <h4>Coding & Simulation</h4>
+        <p>Developed numerical models and data-driven simulations to support physics and engineering research, including fluid dynamics, energy conversion systems, 
+        and machine learning-assisted mechanical design.</p>
+      </div>
+    </section>
+
+    <section id="resume">
+      <h3>Resume</h3>
+      <iframe src="Mann.Phillip(Davidson).pdf" width="100%" height="600px" title="Phillip Mann Resume"></iframe>
+    </section>
+  </main>
+
+  <footer>
+    <p>© 2025 Phillip Mann | Built with GitHub Pages</p>
+  </footer>
+
+  <script src="boatFiles.js"></script>
+  <script src="aureliaFiles.js"></script>
+
+  <script>
+    function populateGallery(files, galleryId) {
+      const gallery = document.getElementById(galleryId);
+      files.forEach(file => {
+        if (file.match(/\.(mp4|mov|webm)$/i)) {
+          const video = document.createElement('video');
+          video.src = file;
+          video.controls = true;
+          video.className = 'project-image';
+          gallery.appendChild(video);
+        } else {
+          const img = document.createElement('img');
+          img.src = file;
+          img.className = 'project-image';
+          img.alt = galleryId + ' photo';
+          img.addEventListener('click', () => {
+            const lightbox = document.createElement('div');
+            lightbox.className = 'lightbox';
+            lightbox.innerHTML = `<img class='lightbox-content' src='${file}' alt=''>`;
+            document.body.appendChild(lightbox);
+            lightbox.addEventListener('click', () => document.body.removeChild(lightbox));
+          });
+          gallery.appendChild(img);
+        }
+      });
+    }
+
+    populateGallery(boatFiles, 'boat-gallery');
+    populateGallery(aureliaFiles, 'aurelia-gallery');
+  </script>
+</body>
+</html>

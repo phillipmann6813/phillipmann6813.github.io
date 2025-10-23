@@ -14,26 +14,29 @@ jobs:
       - name: Checkout repository
         uses: actions/checkout@v3
 
+      # --- Generate Boat Gallery ---
       - name: Generate Boat Gallery HTML
         run: |
           echo "<div class='gallery'>" > boat.tmp
           for img in images/boat/*; do
-            if [[ "$img" =~ \.(jpg|jpeg|png|gif|webp|mov|mp4|JPG|JPEG|PNG|GIF|WEBP)$ ]]; then
+            if [[ "$img" =~ \.(jpg|jpeg|png|gif|webp|mov|mp4|JPG|JPEG|PNG|GIF|WEBP|MOV|MP4)$ ]]; then
               echo "<a href='$img' target='_blank'><img src='$img' alt='Boat image'></a>" >> boat.tmp
             fi
           done
           echo "</div>" >> boat.tmp
 
+      # --- Generate Aurelia Gallery ---
       - name: Generate Aurelia Gallery HTML
         run: |
           echo "<div class='gallery'>" > aurelia.tmp
           for img in images/Aurelia/*; do
-            if [[ "$img" =~ \.(jpg|jpeg|png|gif|webp|mov|mp4|JPG|JPEG|PNG|GIF|WEBP)$ ]]; then
+            if [[ "$img" =~ \.(jpg|jpeg|png|gif|webp|mov|mp4|JPG|JPEG|PNG|GIF|WEBP|MOV|MP4)$ ]]; then
               echo "<a href='$img' target='_blank'><img src='$img' alt='Aurelia image'></a>" >> aurelia.tmp
             fi
           done
           echo "</div>" >> aurelia.tmp
 
+      # --- Inject Galleries into index.html ---
       - name: Inject galleries into index.html
         run: |
           awk '/<div id="boat-gallery">/{print;system("cat boat.tmp");next}1' index.html > index_new.html
@@ -41,10 +44,13 @@ jobs:
           awk '/<div id="aurelia-gallery">/{print;system("cat aurelia.tmp");next}1' index.html > index_new.html
           mv index_new.html index.html
 
+      # --- Commit and Push using PAT ---
       - name: Commit updated index.html
+        env:
+          GH_PAT: ${{ secrets.GH_PAT }}
         run: |
-          git config user.name "github-actions[bot]"
-          git config user.email "github-actions[bot]@users.noreply.github.com"
+          git config user.name "Auto Gallery Bot"
+          git config user.email "phmann-bot@example.com"
           git add index.html
           git commit -m "Auto-inject Boat and Aurelia galleries" || echo "No changes to commit"
-          git push
+          git push https://phillipmann6813:${GH_PAT}@github.com/phillipmann6813/phillipmann6813.github.io.git

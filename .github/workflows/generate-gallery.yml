@@ -1,3 +1,56 @@
+name: Inject Auto Galleries
+
+on:
+  push:
+    paths:
+      - 'images/**'
+      - '.github/workflows/generate-gallery.yml'
+
+jobs:
+  inject-galleries:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v3
+
+      - name: Generate Boat Gallery HTML
+        run: |
+          echo "<div class='gallery'>" > boat.tmp
+          for img in images/boat/*; do
+            if [[ "$img" =~ \.(jpg|jpeg|png|gif|webp|mov|mp4|JPG|JPEG|PNG|GIF|WEBP)$ ]]; then
+              echo "<a href='$img' target='_blank'><img src='$img' alt='Boat image'></a>" >> boat.tmp
+            fi
+          done
+          echo "</div>" >> boat.tmp
+
+      - name: Generate Aurelia Gallery HTML
+        run: |
+          echo "<div class='gallery'>" > aurelia.tmp
+          for img in images/Aurelia/*; do
+            if [[ "$img" =~ \.(jpg|jpeg|png|gif|webp|mov|mp4|JPG|JPEG|PNG|GIF|WEBP)$ ]]; then
+              echo "<a href='$img' target='_blank'><img src='$img' alt='Aurelia image'></a>" >> aurelia.tmp
+            fi
+          done
+          echo "</div>" >> aurelia.tmp
+
+      - name: Inject galleries into index.html
+        run: |
+          # Replace boat gallery
+          awk '/<div id="boat-gallery">/{print;system("cat boat.tmp");next}1' index.html > index_new.html
+          mv index_new.html index.html
+
+          # Replace Aurelia gallery
+          awk '/<div id="aurelia-gallery">/{print;system("cat aurelia.tmp");next}1' index.html > index_new.html
+          mv index_new.html index.html
+
+      - name: Commit updated index.html
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "github-actions[bot]@users.noreply.github.com"
+          git add index.html
+          git commit -m "Auto-inject Boat and Aurelia galleries" || echo "No changes to commit"
+          git push
 name: Generate Gallery JS
 
 on:

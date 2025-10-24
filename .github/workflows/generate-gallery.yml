@@ -7,6 +7,8 @@ on:
       - '.github/workflows/generate-gallery.yml'
       - 'index.html'
 
+permissions: write-all
+
 jobs:
   inject-galleries:
     runs-on: ubuntu-latest
@@ -50,7 +52,7 @@ jobs:
           mv index_new.html index.html
 
       # ✅ Commit and Push changes with PAT
-      - name: Commit and Push
+      - name: Commit and Push using PAT
         env:
           GH_PAT: ${{ secrets.GH_PAT }}
         run: |
@@ -58,4 +60,7 @@ jobs:
           git config user.email "phmann-bot@example.com"
           git add index.html
           git commit -m "Auto-inject Boat and Aurelia galleries" || echo "No changes to commit"
-          git push https://phillipmann6813:${GH_PAT}@github.com/phillipmann6813/phillipmann6813.github.io.git
+
+          # Push using Personal Access Token (PAT)
+          REPO="github.com/phillipmann6813/phillipmann6813.github.io.git"
+          git push https://${GH_PAT}@${REPO} HEAD:main

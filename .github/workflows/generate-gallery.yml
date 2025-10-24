@@ -1,51 +1,56 @@
-name: Inject Auto Galleries
+name: Auto-Inject Galleries
 
 on:
   push:
     paths:
       - 'images/**'
       - '.github/workflows/generate-gallery.yml'
+      - 'index.html'
 
 jobs:
   inject-galleries:
     runs-on: ubuntu-latest
 
     steps:
+      # ✅ Checkout repository
       - name: Checkout repository
-        uses: actions/checkout@v3
+        uses: actions/checkout@v4
 
-      # --- Generate Boat Gallery ---
+      # ✅ Generate Boat Gallery HTML
       - name: Generate Boat Gallery HTML
         run: |
           echo "<div class='gallery'>" > boat.tmp
           for img in images/boat/*; do
-            if [[ "$img" =~ \.(jpg|jpeg|png|gif|webp|mov|mp4|JPG|JPEG|PNG|GIF|WEBP|MOV|MP4)$ ]]; then
+            if [[ "$img" =~ \.(jpg|jpeg|png|gif|webp|mp4|mov|JPG|JPEG|PNG|GIF|WEBP|MP4|MOV)$ ]]; then
               echo "<a href='$img' target='_blank'><img src='$img' alt='Boat image'></a>" >> boat.tmp
             fi
           done
           echo "</div>" >> boat.tmp
 
-      # --- Generate Aurelia Gallery ---
+      # ✅ Generate Aurelia Gallery HTML
       - name: Generate Aurelia Gallery HTML
         run: |
           echo "<div class='gallery'>" > aurelia.tmp
           for img in images/Aurelia/*; do
-            if [[ "$img" =~ \.(jpg|jpeg|png|gif|webp|mov|mp4|JPG|JPEG|PNG|GIF|WEBP|MOV|MP4)$ ]]; then
+            if [[ "$img" =~ \.(jpg|jpeg|png|gif|webp|mp4|mov|JPG|JPEG|PNG|GIF|WEBP|MP4|MOV)$ ]]; then
               echo "<a href='$img' target='_blank'><img src='$img' alt='Aurelia image'></a>" >> aurelia.tmp
             fi
           done
           echo "</div>" >> aurelia.tmp
 
-      # --- Inject Galleries into index.html ---
+      # ✅ Inject galleries into index.html
       - name: Inject galleries into index.html
         run: |
+          # Replace Boat gallery section
           awk '/<div id="boat-gallery">/{print;system("cat boat.tmp");next}1' index.html > index_new.html
           mv index_new.html index.html
+
+          # Replace Aurelia gallery section
           awk '/<div id="aurelia-gallery">/{print;system("cat aurelia.tmp");next}1' index.html > index_new.html
           mv index_new.html index.html
 
-      # --- Commit and Push using PAT ---
-      - name: Commit updated index.html
+      # ✅ Commit and Push changes with PAT
+      - name: Commit and Push
         env:
           GH_PAT: ${{ secrets.GH_PAT }}
         run: |

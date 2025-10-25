@@ -1,124 +1,160 @@
-/* -------------------------------
-   Global Styles
--------------------------------- */
-body {
-  font-family: "Helvetica Neue", Arial, sans-serif;
+/* ========== GLOBAL STYLES ========== */
+
+* {
+  box-sizing: border-box;
   margin: 0;
   padding: 0;
-  color: #222;
-  background-color: #fafafa;
-  line-height: 1.6;
+  font-family: "Inter", "Helvetica Neue", Arial, sans-serif;
 }
 
-/* -------------------------------
-   Header
--------------------------------- */
+body {
+  background-color: #f8f9fb;
+  color: #222;
+  line-height: 1.7;
+  font-size: 17px;
+  padding: 0;
+  margin: 0;
+}
+
+/* ========== HEADER ========== */
+
 header {
   text-align: center;
-  padding: 2.5rem 1rem;
-  background-color: #f3f3f3;
-  border-bottom: 1px solid #ddd;
+  padding: 60px 20px 40px;
+  background: linear-gradient(180deg, #ffffff 0%, #f3f6fa 100%);
+  border-bottom: 1px solid #e0e0e0;
 }
 
 header h1 {
-  font-size: 2rem;
-  margin-bottom: 0.4rem;
+  font-size: 2.4em;
+  margin-bottom: 10px;
   color: #111;
+  letter-spacing: 0.5px;
 }
 
 header p {
-  font-size: 1.1rem;
-  color: #444;
-  margin: 0.2rem 0;
-}
-
-.contact-links {
-  margin-top: 0.6rem;
+  color: #555;
+  font-weight: 400;
+  margin-bottom: 15px;
 }
 
 .contact-links a {
-  color: #0077cc;
+  color: #0066cc;
   text-decoration: none;
-  margin: 0 0.5rem;
   font-weight: 500;
+  margin: 0 5px;
 }
 
 .contact-links a:hover {
   text-decoration: underline;
 }
 
-/* -------------------------------
-   Main Layout
--------------------------------- */
+/* ========== MAIN CONTENT ========== */
+
 main {
-  max-width: 960px;
+  max-width: 1000px;
   margin: 0 auto;
-  padding: 2rem 1.5rem;
+  padding: 40px 20px 80px;
 }
 
 section {
-  margin-bottom: 4rem;
+  margin-bottom: 70px;
 }
 
-h2 {
+section h2 {
+  font-size: 1.8em;
+  margin-bottom: 15px;
   color: #111;
-  margin-bottom: 0.6rem;
-  border-left: 4px solid #0077cc;
-  padding-left: 0.5rem;
+  text-align: left;
 }
 
-.project h3 {
-  margin-top: 1rem;
+section p {
   color: #333;
+  margin-bottom: 20px;
+  text-align: justify;
 }
 
-/* -------------------------------
-   Gallery Grid
--------------------------------- */
+/* ========== GALLERIES (MASONRY LAYOUT) ========== */
+
 .gallery {
-  display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
-  gap: 16px;
-  margin-top: 1.5rem;
+  column-count: 3;
+  column-gap: 10px;
+  margin-top: 20px;
 }
 
-.gallery img,
-.gallery video {
+.gallery a {
+  break-inside: avoid;
+  display: inline-block;
   width: 100%;
-  border-radius: 8px;
-  box-shadow: 0 3px 6px rgba(0, 0, 0, 0.15);
+}
+
+.gallery img {
+  width: 100%;
+  border-radius: 10px;
+  margin-bottom: 10px;
+  display: block;
   transition: transform 0.3s ease, box-shadow 0.3s ease;
 }
 
-.gallery img:hover,
-.gallery video:hover {
+.gallery img:hover {
   transform: scale(1.03);
-  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
+  box-shadow: 0 3px 10px rgba(0, 0, 0, 0.2);
 }
 
-/* -------------------------------
-   Footer
--------------------------------- */
+/* Responsive adjustments for smaller screens */
+@media (max-width: 900px) {
+  .gallery {
+    column-count: 2;
+  }
+}
+
+@media (max-width: 600px) {
+  .gallery {
+    column-count: 1;
+  }
+}
+
+/* ========== CODING PROJECTS ========== */
+
+.project {
+  margin-bottom: 30px;
+}
+
+.project h3 {
+  font-size: 1.3em;
+  color: #111;
+  margin-bottom: 8px;
+}
+
+.project p {
+  color: #444;
+}
+
+/* ========== FOOTER ========== */
+
 footer {
+  background: #f0f3f6;
   text-align: center;
-  padding: 1.5rem 0;
-  background-color: #f3f3f3;
-  border-top: 1px solid #ddd;
-  font-size: 0.9rem;
+  padding: 25px 10px;
+  font-size: 0.95em;
   color: #555;
+  border-top: 1px solid #ddd;
 }
 
-/* -------------------------------
-   Responsive Design
--------------------------------- */
-@media (max-width: 768px) {
-  header h1 {
-    font-size: 1.6rem;
-  }
-  header p {
-    font-size: 1rem;
-  }
-  main {
-    padding: 1.2rem;
-  }
+footer a {
+  color: #0073e6;
+  text-decoration: none;
+}
+
+footer a:hover {
+  text-decoration: underline;
+}
+
+/* ========== IMAGE / VIDEO TWEAKS ========== */
+
+.gallery video {
+  width: 100%;
+  border-radius: 10px;
+  margin-bottom: 10px;
+  display: block;
 }
